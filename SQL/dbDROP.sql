@@ -1,0 +1,28 @@
+DECLARE @tableName NVARCHAR(128);
+DECLARE @constraintName NVARCHAR(128);
+DECLARE @sql NVARCHAR(MAX);
+
+-- Drop foreign key constraints for STATS table
+SET @tableName = 'STATS';
+SELECT @constraintName = CONSTRAINT_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = @tableName AND CONSTRAINT_NAME LIKE 'FK_%';
+IF @constraintName IS NOT NULL
+BEGIN
+    SET @sql = 'ALTER TABLE ' + @tableName + ' DROP CONSTRAINT ' + @constraintName;
+EXEC sp_executesql @sql;
+END
+
+-- Drop views
+DROP VIEW IF EXISTS Player_Stats;
+
+-- Drop indexes
+DROP INDEX IF EXISTS idx_Player_ID ON STATS;
+DROP INDEX IF EXISTS idx_Week ON STATS;
+
+-- Drop tables
+DROP TABLE IF EXISTS STATS;
+DROP TABLE IF EXISTS PLAYER;
+DROP TABLE IF EXISTS TEAM;
+DROP TABLE IF EXISTS DIVISION;
+DROP TABLE IF EXISTS CONFERENCE;

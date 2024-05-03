@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FantasygeniebackendApplication {
 
 	public static void main(String[] args) {
+
+	        Dotenv.configure().load();
+
 		SpringApplication.run(FantasygeniebackendApplication.class, args);
 	}
 
